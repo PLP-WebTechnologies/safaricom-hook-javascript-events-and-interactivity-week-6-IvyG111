@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Elements and Form Validation</title>
+  <style>
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #4CAF50;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      color: #555;
+    }
+
+    button {
+      padding: 15px 25px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: amber;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      width: 400px;
+      text-align: center;
+    }
+
+    .close {
+      font-size: 24px;
+      color: #aaa;
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 15px;
+    }
+
+    .close:hover {
+      color: black;
+    }
+
+
+    input[type="range"] {
+      width: 100%;
+      margin: 15px 0;
+      padding: 8px 0;
+    }
+
+    #text {
+      font-size: 16px;
+      transition: font-size 0.2s ease;
+    }
+
+
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    form input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    form span {
+      color: red;
+      font-size: 0.9rem;
+    }
+
+    form input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    form input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+
+    select {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+    }
+
+    #message {
+      margin-top: 15px;
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+
+      button, form input[type="submit"] {
+        width: 100%;
+      }
+
+      .modal-content {
+        width: 90%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Interactive Elements and Form Validation</h1>
+    <h2>Explore the dynamic elements below</h2>
+  </header>
+
+  <main>
+
+    <button onclick="toggleBackground()">Toggle Background Color</button>
+
+    <input type="range" min="10" max="50" value="16" oninput="changeFontSize(this.value)">
+    <p id="text">Adjust the font size!</p>
+
+    
+    <button onclick="openModal()">Open Modal</button>
+    <div id="modal">
+      <div class="modal-content">
+        <span onclick="closeModal()" class="close">&times;</span>
+        <p>modal-content!</p>
+      </div>
+    </div>
+
+    <form onsubmit="return validateForm()">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+      <span id="nameError"></span><br>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <span id="emailError"></span><br>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <span id="passwordError"></span><br>
+
+      <input type="submit" value="Submit">
+    </form>
+
+    <select onchange="displayMessage(this.value)">
+      <option value="">Select an option</option>
+      <option value="Option 1">Option 1</option>
+      <option value="Option 2">Option 2</option>
+    </select>
+    <p id="message"></p>
+  </main>
+
+  <footer>
+    <p>Created by Ivyyy</p>
+  </footer>
+
+  <script>
+
+    function toggleBackground() {
+      document.body.style.backgroundColor = 
+        document.body.style.backgroundColor === 'lightblue' ? 'lightgreen' : 'lightblue';
+    }
+
+    function changeFontSize(size) {
+      document.getElementById('text').style.fontSize = size + 'px';
+    }
+
+    function openModal() {
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    function validateForm() {
+      let name = document.getElementById('name').value;
+      let email = document.getElementById('email').value;
+      let password = document.getElementById('password').value;
+      let valid = true;
+
+      if (name.length < 3) {
+        document.getElementById('nameError').textContent = 'Name must be at least 3 characters';
+        valid = false;
+      } else {
+        document.getElementById('nameError').textContent = '';
+      }
+
+
+      let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+      if (!email.match(emailPattern)) {
+        document.getElementById('emailError').textContent = 'Enter a valid email address';
+        valid = false;
+      } else {
+        document.getElementById('emailError').textContent = '';
+      }
+
+    
+      let passwordPattern = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+      if (!password.match(passwordPattern)) {
+        document.getElementById('passwordError').textContent = 'Password must be at least 8 characters, with 1 uppercase letter and 1 number';
+        valid = false;
+      } else {
+        document.getElementById('passwordError').textContent = '';
+      }
+
+      return valid;  
+    }
+
+    function displayMessage(value) {
+      let message = value ? `You selected: ${value}` : '';
+      document.getElementById('message').textContent = message;
+    }
+  </script>
+</body>
+</html>
